@@ -538,14 +538,14 @@ function InterpolatePoints(points, pos)
 	elseif pos >= 1 then
 		Mu = 1
         else
-		Mu = Pos * (#points - 1)
+		Mu = pos * (#points - 1)
         	Mu = Mu % 1
 	end
 
-	local P0 = points[math.Clamp(currentPoint - 1, 1, #points - 2), number]
-	local P1 = points[math.Clamp(currentPoint, 1, #points - 1), number]
-	local P2 = points[math.Clamp(currentPoint + 1, 2, #points), number]
-	local P3 = points[math.Clamp(currentPoint + 2, 3, #points), number]
+	local P0 = points[math.Clamp(currentPoint - 1, 1, #points - 2)]
+	local P1 = points[math.Clamp(currentPoint, 1, #points - 1)]
+	local P2 = points[math.Clamp(currentPoint + 1, 2, #points)]
+	local P3 = points[math.Clamp(currentPoint + 2, 3, #points)]
 	return 0.5 * ((2 * P1) +
 	(P2 - P0) * Mu +
 	(2 * P0 - 5 * P1 + 4 * P2 - P3) * Mu ^ 2 +
@@ -597,7 +597,7 @@ function ENT:CalcRPM()
 	self.PeakTorque = self.PeakTorqueHeld * self.TorqueMult
 
 	-- Calculate the current torque from flywheel RPM
-	self.Torque = boost * self.Throttle * math.max( self.PeakTorque * InterpolatePoints(self.TorqueArray, self.FlyRPM / self.PeakMaxRPM), 1 ), 0 )
+	self.Torque = boost * self.Throttle * math.max( self.PeakTorque * InterpolatePoints(self.TorqueArray, self.FlyRPM / self.PeakMaxRPM), 1 )
 	
 	local Drag 
 	if self.iselec == true then
