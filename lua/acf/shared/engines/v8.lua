@@ -12,11 +12,12 @@ ACF_DefineEngine( "5.7-V8", {
 	fuel = "Petrol",
 	enginetype = "GenericPetrol",
 	weight = 260,
+	torquearray = {0.2, 0.5, 0.8, 1, 0.5}
 	torque = 320,
 	flywheelmass = 0.15,
-	idlerpm = 800,
+	idlerpm = 650,
 	peakminrpm = 3000,
-	peakmaxrpm = 5000,
+	peakmaxrpm = 6500,
 	limitrpm = 6500
 } )
 
@@ -31,7 +32,7 @@ ACF_DefineEngine( "9.0-V8", {
 	weight = 400,
 	torque = 460,
 	flywheelmass = 0.25,
-	idlerpm = 700,
+	idlerpm = 600,
 	peakminrpm = 3100,
 	peakmaxrpm = 5000,
 	limitrpm = 5500
