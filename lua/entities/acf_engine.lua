@@ -147,6 +147,7 @@ function MakeACF_Engine(Owner, Pos, Angle, Id)
 	Engine.Model = Lookup.model
 	Engine.SoundPath = Lookup.sound
 	Engine.Weight = Lookup.weight
+	Engine.TorqueArray = Lookup.torquearray
 	Engine.PeakTorque = Lookup.torque
 	Engine.PeakTorqueHeld = Lookup.torque
 	Engine.IdleRPM = Lookup.idlerpm
@@ -526,6 +527,31 @@ function ENT:ACFInit()
 
 end
 
+function InterpolatePoints(points, pos)
+	if #points < 4 then
+		error("Must have at least 4 points in array")
+	end
+	local currentPoint = math.floor(pos * (#points - 1) + 1)
+	local Mu = 0
+	if pos <= 0 then
+		Mu = 0
+	elseif pos >= 1 then
+		Mu = 1
+        else
+		Mu = Pos * (#points - 1)
+        	Mu = Mu % 1
+	end
+
+	local P0 = points[math.Clamp(currentPoint - 1, 1, #points - 2), number]
+	local P1 = points[math.Clamp(currentPoint, 1, #points - 1), number]
+	local P2 = points[math.Clamp(currentPoint + 1, 2, #points), number]
+	local P3 = points[math.Clamp(currentPoint + 2, 3, #points), number]
+	return 0.5 * ((2 * P1) +
+	(P2 - P0) * Mu +
+	(2 * P0 - 5 * P1 + 4 * P2 - P3) * Mu ^ 2 +
+	(3 * P1 - P0 - 3 * P2 + P3) * Mu ^ 3)
+end
+
 function ENT:CalcRPM()
 
 	local DeltaTime = CurTime() - self.LastThink
@@ -571,7 +597,7 @@ function ENT:CalcRPM()
 	self.PeakTorque = self.PeakTorqueHeld * self.TorqueMult
 
 	-- Calculate the current torque from flywheel RPM
-	self.Torque = boost * self.Throttle * math.max( self.PeakTorque * math.min( self.FlyRPM / self.PeakMinRPM, (self.LimitRPM - self.FlyRPM) / (self.LimitRPM - self.PeakMaxRPM), 1 ), 0 )
+	self.Torque = boost * self.Throttle * math.max( self.PeakTorque * InterpolatePoints(self.TorqueArray, self.FlyRPM / self.PeakMaxRPM), 1 ), 0 )
 	
 	local Drag 
 	if self.iselec == true then
