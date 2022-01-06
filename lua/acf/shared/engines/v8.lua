@@ -12,7 +12,7 @@ ACF_DefineEngine( "5.7-V8", {
 	fuel = "Petrol",
 	enginetype = "GenericPetrol",
 	weight = 260,
-	torquearray = {0.2, 0.5, 0.8, 1, 0.5}
+	torquearray = {0.2, 0.5, 0.8, 1, 0.8, 0.5}
 	torque = 320,
 	flywheelmass = 0.15,
 	idlerpm = 650,
