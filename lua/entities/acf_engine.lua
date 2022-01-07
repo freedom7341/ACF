@@ -597,7 +597,11 @@ function ENT:CalcRPM()
 	self.PeakTorque = self.PeakTorqueHeld * self.TorqueMult
 
 	-- Calculate the current torque from flywheel RPM
-	self.Torque = boost * self.Throttle * math.max( self.PeakTorque * InterpolatePoints(self.TorqueArray, self.FlyRPM / self.PeakMaxRPM), 1 )
+	if self.TorqueArray then
+		self.Torque = boost * self.Throttle * math.max( self.PeakTorque * InterpolatePoints(self.TorqueArray, self.FlyRPM / self.PeakMaxRPM), 1 )
+	else
+		self.Torque = boost * self.Throttle * math.max( self.PeakTorque * math.min( self.FlyRPM / self.PeakMinRPM, (self.LimitRPM - self.FlyRPM) / (self.LimitRPM - self.PeakMaxRPM), 1 ), 0 )
+	end
 	
 	local Drag 
 	if self.iselec == true then

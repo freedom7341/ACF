@@ -2,10 +2,10 @@ ACF = {}
 ACF.AmmoTypes = {}
 ACF.MenuFunc = {}
 ACF.AmmoBlacklist = {}
-ACF.Version = 663 -- REMEMBER TO CHANGE THIS FOR GODS SAKE, OMFG!!!!!!! -wrex   Update the changelog too! -Ferv
+ACF.Version = 1 -- REMEMBER TO CHANGE THIS FOR GODS SAKE, OMFG!!!!!!! -wrex   Update the changelog too! -Ferv
 ACF.CurrentVersion = 0 -- just defining a variable, do not change
 
-ACF.Year = 1945
+ACF.Year = 1980
 
 ACF.Threshold =   264.7	--Health Divisor (don't forget to update cvar function down below)
 ACF.PartialPenPenalty = 5 --Exponent for the damage penalty for partial penetration
@@ -48,10 +48,11 @@ ACF.PScale = 1	--Gun Propellant power expotential
 ACF.MVScale = 0.5  --Propellant to MV convertion expotential
 ACF.PDensity = 1.6	--Gun propellant density (Real powders go from 0.7 to 1.6, i'm using higher densities to simulate case bottlenecking)
 
-ACF.TorqueBoost = 1.25 --torque multiplier from using fuel
-ACF.FuelRate = 5  --multiplier for fuel usage, 1.0 is approx real world
+ACF.TorqueBoost = 1.0 --torque multiplier from using fuel
+ACF.FuelRate = 2  --multiplier for fuel usage, 1.0 is approx real world, 5.0 is ACF2 default
+--ACF.FuelRequired = 1 -- require fuel for engines regardless of setting or not
 ACF.ElecRate = 1.5 --multiplier for electrics
-ACF.TankVolumeMul = 0.5 -- multiplier for fuel tank capacity, 1.0 is approx real world
+ACF.TankVolumeMul = 0.5 -- multiplier for fuel tank capacity, 1.0 is approx real world, 0.5 is ACF2 default
 
 --[[
 	random, low cost legality check that discourages attempts to game checking with a hard to predict timing and punishing lockout time
@@ -522,15 +523,15 @@ else
 end
 
 function ACF_UpdateChecking( )
-	http.Fetch("https://github.com/nrlulz/ACF",function(contents,size)
+	http.Fetch("https://github.com/freedom7341/ACF-4",function(contents,size)
 		local rev = tonumber(string.match( contents, "%s*(%d+)\n%s*</span>\n%s*commits" )) or 0 --"history\"></span>\n%s*(%d+)\n%s*</span>"
 		if rev and ACF.Version >= rev then
-			print("[ACF] ACF Is Up To Date, Latest Version: "..rev)
+			print("[ACF-4] ACF-4 Is Up To Date, Latest Version: "..rev)
 		elseif !rev then
-			print("[ACF] No Internet Connection Detected! ACF Update Check Failed")
+			print("[ACF-4] No Internet Connection Detected! ACF-4 Update Check Failed")
 		else
-			print("[ACF] A newer version of ACF is available! Version: "..rev..", You have Version: "..ACF.Version)
-			if CLIENT then chat.AddText( Color( 255, 0, 0 ), "A newer version of ACF is available!" ) end
+			print("[ACF-4] A newer version of ACF-4 is available! Version: "..rev..", You have Version: "..ACF.Version)
+			if CLIENT then chat.AddText( Color( 255, 0, 0 ), "A newer version of ACF-4 is available!" ) end
 		end
 		ACF.CurrentVersion = rev
 		
